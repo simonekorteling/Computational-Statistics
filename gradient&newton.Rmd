@@ -1,0 +1,85 @@
+---
+title: "Computational Statistics - optimization functions"
+author: "Simone Korteling"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    latex_engine: pdflatex
+  word_document: default
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 12pt
+spacing: double
+biblio-style: apsr
+---
+
+```{r}
+install.packages("Deriv")
+library(Deriv)
+```
+
+Gradient descent
+```{r}
+test_function <- function(x){
+  (x^2-3*x + 2)
+}
+
+f_derivative <- function(x){
+  (2*x -3)
+}
+
+old_min = 0 
+starting = 3
+step_size = 0.01
+precision = 0.0001 
+
+gradient <- function(test_function, f_derivative, starting){  
+  while(abs(starting - old_min) > precision) {
+    old_min = starting
+    gradient = f_derivative(old_min) 
+    starting = old_min - (gradient*step_size) 
+    print(starting)
+  }
+}
+
+gradient(test_function, f_derivative, starting)
+```
+
+
+## Newtons method
+```{r}
+
+test_function <- function(x){
+  (x^2-3*x + 2)
+}
+
+f_derivative <- function(x){
+  (2*x -3)
+}
+
+f_second<- function(x){
+  Deriv(f_derivative, "x")
+}
+
+f_second<- function(x){
+  f_second<-2
+}
+
+old_min = 0 
+starting = 3
+step_size = 0.01
+precision = 0.0001 
+
+newton <- function(test_function, f_derivative,f_second, starting){  
+  while(abs(starting - old_min) > precision) {
+    old_min = starting
+    gradient_first = f_derivative(old_min)
+    gradient_second = f_second(old_min)
+    starting = old_min - (gradient_first*step_size) / (gradient_second*step_size)
+    print(format(round(starting, 3)))
+  }
+}
+
+newton(test_function, f_derivative, f_second, starting)
+```
+
